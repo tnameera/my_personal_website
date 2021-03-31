@@ -59,7 +59,8 @@
   </head>
   <body class="body">
     <p class="bio">
-        We learnt about the folium package in CSCI-127, so i decided to have some fun with it! Here is some code that produces a plot to trace my journey.
+        We learnt about the folium and turtle package in CSCI-127, so i decided to have some fun with it! 
+        Here is some code that produces a plot to trace my journey and to produce a snowflake.
       </p>
     <pre><code class="python">
         #Import the folium package for making maps
@@ -80,4 +81,61 @@
         mapWorld.save(outfile='Map.html')
     </code></pre>
         <embed type="text/html" src="Map.html" width="1500" height="400">
+          <pre><code class="python">
+# Draw n-rayed fractal star using recursion
+# Language: Python 3.8
+# Author: Syeda Nameera Tahseen
+# Date: 03/30/2021
+
+
+import sys 
+from turtle import *
+
+def star(turtle, n,r):
+  """ draw a star of n rays of length d"""
+  for k in range(0,n):
+    turtle.pendown()
+    turtle.forward(r)
+    turtle.penup()
+    turtle.backward(r)
+    turtle.left(360/n)
+
+f = 0.3  # rescaling factor
+    
+def recursive_star(turtle, n, r, depth):
+  """At each point of the star, draw another smaller star,
+  and so on, up to given depth.  Rescale the stars by a factor f
+  at each generation."""
+  global f
+  if depth == 0:
+    star(turtle, n, f*4)
+  else:
+    for k in range(0,n):
+      turtle.pendown()
+      turtle.forward(r)
+      recursive_star(turtle, n, f*r, depth - 1)
+      turtle.penup()
+      turtle.backward(r)
+      turtle.left(360/n)
+
+def saveImage(turtle, filename):
+  """Save turtle graphics drawing to eps file."""
+  ts = turtle.getscreen()
+  tc = ts.getcanvas()
+  tc.postscript(file=filename)
+ 
+fred = Turtle()
+fred.speed("fastest")
+
+# Draw a fractal star of depth sys.argv[2] with sys.argv[1] rays:
+recursive_star(fred, 4, 200, 4)
+fred.hideturtle()
+
+
+saveImage(fred,"snowflake.eps")
+
+exitonclick()  
+    
+        </code></pre>
+        <embed type="text/html" src="snowflake.eps" width="400" height="400">
   </body>
